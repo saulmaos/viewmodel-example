@@ -1,5 +1,6 @@
 package com.recodigo.viewmodelexample
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -14,7 +15,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        val sharedPreferences = application.getSharedPreferences("preferences", Context.MODE_PRIVATE)
+
+        val mainViewModelFactory = MainViewModelFactory(sharedPreferences)
+
+        mainViewModel = ViewModelProvider(this, mainViewModelFactory).get(MainViewModel::class.java)
 
         btnRoll.setOnClickListener { mainViewModel.onBtnRollPressed() }
 
